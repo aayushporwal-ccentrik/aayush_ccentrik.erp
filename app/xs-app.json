@@ -1,0 +1,12 @@
+{
+  "welcomeFile": "index.html",
+  "authenticationMethod": "route",
+  "sessionTimeout": 100,
+  "routes": [
+    {
+      "source": "^/(.*)$",
+      "destination": "srv-api",
+      "authenticationType": "xsuaa"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+ID,productionOrder_ID,testDate,isPassed,limeSaturationFactor,silicaModulus,strength28Day
+q1q1-0001,p1p1p1p1-0001,2026-05-01T15:00:00Z,true,92.5,2.4,0.0
+q1q1-0002,p1p1p1p1-0002,2026-04-26T20:00:00Z,true,95.0,2.6,45.5
+q1q1-0003,p1p1p1p1-0005,2026-04-29T23:00:00Z,true,94.2,2.5,44.8
+q1q1-0004,p1p1p1p1-0004,2026-05-04T12:00:00Z,false,88.0,2.1,0.0
+q1q1-0005,p1p1p1p1-0002,2026-04-27T08:00:00Z,true,95.2,2.6,46.1

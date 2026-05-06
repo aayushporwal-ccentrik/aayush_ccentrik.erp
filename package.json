@@ -1,0 +1,60 @@
+{
+  "name": "erp",
+  "version": "1.0.0",
+  "dependencies": {
+    "@cap-js/hana": "^2",
+    "@sap/cds": "^9",
+    "@sap/xssec": "^4"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^2",
+    "@sap/cds-dk": "^9",
+    "cds-plugin-ui5": "^0.13.0",
+    "rimraf": "^5.0.5",
+    "mbt": "^1.2.29"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-manageproducts": "cds watch --open com.cements.erp.products.manageproducts/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "undeploy": "cf undeploy erp --delete-services --delete-service-keys --delete-service-brokers",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive",
+    "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
+    "watch-manageplants": "cds watch --open com.cements.erp.plants.manageplants/index.html?sap-ui-xx-viewCache=false --livereload false"
+  },
+  "private": true,
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/manageproducts",
+    "app/manageplants"
+  ],
+  "cds": {
+    "requires": {
+      "auth": {
+        "[production]": {
+          "kind": "xsuaa"
+        },
+        "[development]": {
+          "kind": "mocked",
+          "users": {
+            "aayush": {
+              "roles": [
+                "Viewer",
+                "Editor"
+              ]
+            }
+          }
+        }
+      },
+      "db": {
+        "[production]": {
+          "kind": "hana"
+        },
+        "[development]": {
+          "kind": "sqlite"
+        }
+      }
+    }
+  }
+}
