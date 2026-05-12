@@ -7,8 +7,9 @@ modules:
   type: nodejs
   path: gen/srv
   requires:
-  - name: erp-db
   - name: erp-auth
+  - name: erp-db
+  - name: erp-destination-service
   provides:
   - name: srv-api
     properties:
@@ -32,30 +33,19 @@ modules:
   - name: erp-repo-host
     parameters:
       content-target: true
+  - name: erp-auth          # ADD THIS
+  - name: erp-destination-service
   build-parameters:
     build-result: resources
     requires:
     - artifacts:
-      - comcementserpproductsmanageproducts.zip
-      name: comcementserpproductsmanageproducts
+      - comaayusherpproductsmanageproducts2.zip
+      name: comaayusherpproductsmanageproducts2
       target-path: resources/
-    - artifacts:
-      - comcementserpplantsmanageplants.zip
-      name: comcementserpplantsmanageplants
-      target-path: resources/
-- name: comcementserpproductsmanageproducts
+
+- name: comaayusherpproductsmanageproducts2
   type: html5
-  path: app/manageproducts
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
-- name: comcementserpplantsmanageplants
-  type: html5
-  path: app/manageplants
+  path: app/manageproducts2
   build-parameters:
     build-result: dist
     builder: custom
@@ -64,11 +54,6 @@ modules:
     - npm run build:cf
     supported-platforms: []
 resources:
-- name: erp-db
-  type: com.sap.xs.hdi-container
-  parameters:
-    service: hana
-    service-plan: hdi-shared
 - name: erp-auth
   type: org.cloudfoundry.managed-service
   parameters:
@@ -77,21 +62,34 @@ resources:
         credential-types:
         - binding-secret
         - x509
+      role-collections:
+      - description: generated
+        name: Viewer (erp ${org}-${space})
+        role-template-references:
+        - $XSAPPNAME.Viewer
+      - description: generated
+        name: Editor (erp ${org}-${space})
+        role-template-references:
+        - $XSAPPNAME.Editor
       tenant-mode: dedicated
       xsappname: erp-${org}-${space}
     path: ./xs-security.json
     service: xsuaa
     service-plan: application
+- name: erp-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
 - name: erp-repo-host
   type: org.cloudfoundry.managed-service
   parameters:
     service: html5-apps-repo
     service-name: erp-html5-service
     service-plan: app-host
+    sap-cloud-service: erp 
 - name: erp-destination-service
   type: org.cloudfoundry.managed-service
-  requires:
-  - name: srv-api
   parameters:
     config:
       HTML5Runtime_enabled: true
@@ -103,13 +101,6 @@ resources:
             ProxyType: Internet
             Type: HTTP
             URL: https://ui5.sap.com
-          - Authentication: OAuth2UserTokenExchange
-            Name: srv-api
-            ProxyType: Internet
-            Type: HTTP
-            URL: ~{srv-api/srv-url}
-            HTML5.DynamicDestination: true
-            HTML5.ForwardAuthToken: true
           existing_destinations_policy: update
       version: 1.0.0
     service: destination

@@ -1,4 +1,2 @@
 
-using from './manageproducts/annotations';
-
-using from './manageplants/annotations';
+using from './manageproducts2/annotations';

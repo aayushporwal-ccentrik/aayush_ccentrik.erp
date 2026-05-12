@@ -9,6 +9,14 @@
     {
       "name": "$XSAPPNAME.Edit",
       "description": "edit"
+    },
+    {
+      "name": "$XSAPPNAME.Viewer",
+      "description": "Viewer"
+    },
+    {
+      "name": "$XSAPPNAME.Editor",
+      "description": "Editor"
     }
   ],
   "attributes": [],

@@ -1,0 +1,28 @@
+{
+  "generationParameters": {
+    "generationDate": "Tue May 12 2026 06:33:43 GMT+0000 (Coordinated Universal Time)",
+    "generatorPlatform": "SAP Business Application Studio",
+    "serviceType": "Local CAP",
+    "metadataFilename": "",
+    "serviceUrl": "http://localhost:4004/odata/v4/CatalogService/",
+    "appName": "manageproducts2",
+    "appTitle": "Products",
+    "appDescription": "An SAP Fiori application.",
+    "appNamespace": "com.aayush.erp.products",
+    "ui5Theme": "sap_horizon",
+    "ui5Version": "1.147.2",
+    "enableEslint": true,
+    "enableTypeScript": false,
+    "showMockDataInfo": false,
+    "generatorVersion": "1.24.0",
+    "template": "List Report Page V4",
+    "generatorName": "SAP Fiori Application Generator",
+    "entityRelatedConfig": [
+      {
+        "type": "Main Entity",
+        "value": "Products"
+      }
+    ],
+    "launchText": "To launch the generated app, start your CAP project:  and navigate to the following location in your browser:\n\nhttp://localhost:4004/com.aayush.erp.products.manageproducts2/index.html"
+  }
+}

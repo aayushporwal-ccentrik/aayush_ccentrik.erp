@@ -4,38 +4,45 @@
   "dependencies": {
     "@cap-js/hana": "^2",
     "@sap/cds": "^9",
+    "@sap/hana-client": "^2.28.20",
     "@sap/xssec": "^4"
   },
   "devDependencies": {
     "@cap-js/sqlite": "^2",
     "@sap/cds-dk": "^9",
     "cds-plugin-ui5": "^0.13.0",
-    "rimraf": "^5.0.5",
-    "mbt": "^1.2.29"
+    "mbt": "^1.2.29",
+    "rimraf": "^5.0.5"
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-manageproducts": "cds watch --open com.cements.erp.products.manageproducts/index.html?sap-ui-xx-viewCache=false --livereload false",
     "undeploy": "cf undeploy erp --delete-services --delete-service-keys --delete-service-brokers",
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
     "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
-    "watch-manageplants": "cds watch --open com.cements.erp.plants.manageplants/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-manageproducts2": "cds watch --open com.aayush.erp.products.manageproducts2/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "workspaces": [
     "app/*"
   ],
   "sapux": [
-    "app/manageproducts",
-    "app/manageplants"
+    "app/manageproducts2"
   ],
   "cds": {
     "requires": {
-      "auth": {
-        "[production]": {
-          "kind": "xsuaa"
+      "[production]": {
+        "db": {
+          "kind": "hana"
         },
-        "[development]": {
+        "auth": {
+          "kind": "xsuaa"
+        }
+      },
+      "[development]": {
+        "db": {
+          "kind": "sqlite"
+        },
+        "auth": {
           "kind": "mocked",
           "users": {
             "aayush": {
@@ -45,14 +52,6 @@
               ]
             }
           }
-        }
-      },
-      "db": {
-        "[production]": {
-          "kind": "hana"
-        },
-        "[development]": {
-          "kind": "sqlite"
         }
       }
     }
