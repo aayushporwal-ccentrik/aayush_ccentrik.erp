@@ -4,7 +4,6 @@
   "dependencies": {
     "@cap-js/hana": "^2",
     "@sap/cds": "^9",
-    "@sap/hana-client": "^2.28.20",
     "@sap/xssec": "^4"
   },
   "devDependencies": {
@@ -19,14 +18,27 @@
     "undeploy": "cf undeploy erp --delete-services --delete-service-keys --delete-service-brokers",
     "build": "rimraf resources mta_archives && mbt build --mtar archive",
     "deploy": "cf deploy mta_archives/archive.mtar --retries 1",
-    "watch-manageproducts2": "cds watch --open com.aayush.erp.products.manageproducts2/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-manageproducts2": "cds watch --open com.aayush.erp.products.manageproducts2/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-analysestock": "cds watch --open com.cements.erp.stock.analysestock/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-project1": "cds watch --open project1/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-manageproducts": "cds watch --open com.cements.erp.products.manageproducts/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-manageso": "cds watch --open com.aayush.so.manageso/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-salesanalyis": "cds watch --open com.aayush.sa.salesanalyis/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-production-ovp": "cds watch --open com.aayush.po.productionovp/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "workspaces": [
     "app/*"
   ],
   "sapux": [
-    "app/manageproducts2"
+    "app/manageproducts2",
+    "app/analysestock",
+    "app/project1",
+    "app/manageproducts",
+    "app/manageso",
+    "app/salesanalyis",
+    "app/salesanalyis",
+    "app/production-ovp"
   ],
   "cds": {
     "requires": {

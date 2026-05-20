@@ -1,51 +1,123 @@
-_schema-version: 3.3.0
+_schema-version: "3.2"
 ID: erp
-description: A simple CAP project.
+description: ERP CAP project
 version: 1.0.0
 modules:
 - name: erp-srv
   type: nodejs
   path: gen/srv
   requires:
-  - name: erp-auth
   - name: erp-db
-  - name: erp-destination-service
+  - name: erp-auth
   provides:
   - name: srv-api
     properties:
       srv-url: ${default-url}
-  parameters:
-    buildpack: nodejs_buildpack
-    instances: 1
   build-parameters:
     builder: npm-ci
+    ignore:
+    - node_modules/
 - name: erp-db-deployer
   type: hdb
   path: gen/db
   requires:
   - name: erp-db
+  - name: erp-auth
   parameters:
     buildpack: nodejs_buildpack
+  build-parameters:
+    ignore:
+    - node_modules/
 - name: erp-app-content
   type: com.sap.application.content
-  path: .
+  path: gen
   requires:
+  - name: erp-destination-service
   - name: erp-repo-host
     parameters:
       content-target: true
-  - name: erp-auth          # ADD THIS
-  - name: erp-destination-service
   build-parameters:
-    build-result: resources
+    build-result: app/
     requires:
     - artifacts:
-      - comaayusherpproductsmanageproducts2.zip
-      name: comaayusherpproductsmanageproducts2
-      target-path: resources/
-
-- name: comaayusherpproductsmanageproducts2
+      - comcementserpproductsmanageproducts.zip
+      name: comcementserpproductsmanageproducts
+      target-path: app/
+    - artifacts:
+      - comaayushsomanageso.zip
+      name: comaayushsomanageso
+      target-path: app/
+    - artifacts:
+      - comaayushsasalesanalyis.zip
+      name: comaayushsasalesanalyis
+      target-path: app/
+    - artifacts:
+      - comaayushpoproductionovp.zip
+      name: comaayushpoproductionovp
+      target-path: app/
+- name: erp-destinationcontent
+  type: com.sap.application.content
+  requires:
+  - name: erp-auth
+    parameters:
+      service-key:
+        name: erp-auth-key
+  - name: erp-repo-host
+    parameters:
+      service-key:
+        name: erp-repo-host-key
+  - name: erp-destination-service
+    parameters:
+      content-target: true
+  parameters:
+    content:
+      instance:
+        destinations:
+        - Name: erp-html5-repository
+          ServiceInstanceName: erp-repo-host
+          ServiceKeyName: erp-repo-host-key
+          sap.cloud.service: erp
+        - Authentication: OAuth2UserTokenExchange
+          Name: erp-uaa
+          ServiceInstanceName: erp-auth
+          ServiceKeyName: erp-auth-key
+          sap.cloud.service: erp
+        existing_destinations_policy: update
+  build-parameters:
+    no-source: true
+- name: comcementserpproductsmanageproducts
   type: html5
-  path: app/manageproducts2
+  path: app/manageproducts
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comaayushsomanageso
+  type: html5
+  path: app/manageso
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comaayushsasalesanalyis
+  type: html5
+  path: app/salesanalyis
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: comaayushpoproductionovp
+  type: html5
+  path: app/production-ovp
   build-parameters:
     build-result: dist
     builder: custom
@@ -54,40 +126,41 @@ modules:
     - npm run build:cf
     supported-platforms: []
 resources:
-- name: erp-auth
-  type: org.cloudfoundry.managed-service
-  parameters:
-    config:
-      oauth2-configuration:
-        credential-types:
-        - binding-secret
-        - x509
-      role-collections:
-      - description: generated
-        name: Viewer (erp ${org}-${space})
-        role-template-references:
-        - $XSAPPNAME.Viewer
-      - description: generated
-        name: Editor (erp ${org}-${space})
-        role-template-references:
-        - $XSAPPNAME.Editor
-      tenant-mode: dedicated
-      xsappname: erp-${org}-${space}
-    path: ./xs-security.json
-    service: xsuaa
-    service-plan: application
 - name: erp-db
   type: com.sap.xs.hdi-container
   parameters:
     service: hana
     service-plan: hdi-shared
+  properties:
+    hdi-service-name: ${service-name}
+- name: erp-auth
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      role-collections:
+      - description: View ERP data
+        name: erp-viewer-${space}
+        role-template-references:
+        - $XSAPPNAME.Viewer
+      - description: Edit ERP data
+        name: erp-editor-${space}
+        role-template-references:
+        - $XSAPPNAME.Editor
+      tenant-mode: dedicated
+      xsappname: erp-${space}
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
 - name: erp-repo-host
   type: org.cloudfoundry.managed-service
   parameters:
     service: html5-apps-repo
-    service-name: erp-html5-service
     service-plan: app-host
-    sap-cloud-service: erp 
+- name: erp-repo-runtime
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-runtime
 - name: erp-destination-service
   type: org.cloudfoundry.managed-service
   parameters:
@@ -97,6 +170,13 @@ resources:
         instance:
           destinations:
           - Authentication: NoAuthentication
+            HTML5.DynamicDestination: true
+            HTML5.ForwardAuthToken: true
+            Name: erp-srv
+            ProxyType: Internet
+            Type: HTTP
+            URL: ~{srv-api/srv-url}
+          - Authentication: NoAuthentication
             Name: ui5
             ProxyType: Internet
             Type: HTTP
@@ -104,8 +184,9 @@ resources:
           existing_destinations_policy: update
       version: 1.0.0
     service: destination
-    service-name: erp-destination-service
     service-plan: lite
+  requires:
+  - name: srv-api
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
@@ -114,4 +195,4 @@ build-parameters:
   - builder: custom
     commands:
     - npm ci
-    - npx cds build --production
+    - npx -p @sap/cds-dk cds build --profile production,node

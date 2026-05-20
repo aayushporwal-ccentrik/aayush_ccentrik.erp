@@ -25,7 +25,7 @@
       "name": "Viewer",
       "description": "View all the data",
       "scope-references": [
-        "$XSAPPNAME.Display"
+        "$XSAPPNAME.Viewer"
       ],
       "attribute-references": []
     },
@@ -33,7 +33,7 @@
       "name": "Editor",
       "description": "Edit the data",
       "scope-references": [
-        "$XSAPPNAME.Edit"
+        "$XSAPPNAME.Editor"
       ],
       "attribute-references": []
     }

@@ -13,6 +13,8 @@ context master {
     name     : String(100);
     category : commons.category;
     baseUoM  : String(3);
+    @UI.IsImageUrl : true
+    imageUrl     : String; 
   }
 
   entity Plants : cuid, managed {
@@ -93,7 +95,7 @@ context transaction {
     status       : String(20); // Draft, Confirmed, Dispatched, Delivered
     deliveryDate : Date;
     customer     : Association to master.BusinessPartners;
-
+    OVERALL_STATUS: String(1); // N-New, A-Approved, X-Rejected, else Pending
     // Each SO can sell multiple products in one order
     items        : Composition of many SalesOrderItems
                      on items.salesOrder = $self;

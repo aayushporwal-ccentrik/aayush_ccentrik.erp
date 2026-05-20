@@ -1,6 +1,6 @@
-ID,name,category,baseUoM
-6938a9a0-621e-4682-89f5-4422e1858801,Limestone,R,MT
-6938a9a0-621e-4682-89f5-4422e1858802,Gypsum,R,MT
-6938a9a0-621e-4682-89f5-4422e1858803,Clinker,I,MT
-6938a9a0-621e-4682-89f5-4422e1858804,OPC 43 Grade Cement,F,BAG
-6938a9a0-621e-4682-89f5-4422e1858805,PPC Cement,F,BAG
+ID,name,category,baseUoM,imageUrl
+6938a9a0-621e-4682-89f5-4422e1858801,Limestone,R,MT,/d2d985af-f6cf-42c0-b3d9-7333efb5fc7c.erp.comcementserpproductsmanageproducts-0.0.1/Images/Limestone.jpg
+6938a9a0-621e-4682-89f5-4422e1858802,Gypsum,R,MT,/d2d985af-f6cf-42c0-b3d9-7333efb5fc7c.erp.comcementserpproductsmanageproducts-0.0.1/Images/Gypsum.jpg
+6938a9a0-621e-4682-89f5-4422e1858803,Clinker,I,MT,/d2d985af-f6cf-42c0-b3d9-7333efb5fc7c.erp.comcementserpproductsmanageproducts-0.0.1/Images/Clinker.jpg
+6938a9a0-621e-4682-89f5-4422e1858804,OPC 43 Grade Cement,F,BAG,/d2d985af-f6cf-42c0-b3d9-7333efb5fc7c.erp.comcementserpproductsmanageproducts-0.0.1/Images/OPC.jpg
+6938a9a0-621e-4682-89f5-4422e1858805,PPC Cement,F,BAG,/d2d985af-f6cf-42c0-b3d9-7333efb5fc7c.erp.comcementserpproductsmanageproducts-0.0.1/Images/PPC.jpg
