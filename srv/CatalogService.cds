@@ -24,6 +24,15 @@ Service CatalogService @(path: 'CatalogService', requires:'authenticated-user') 
     entity KilnLogs             as projection on transaction.KilnLogs;
     entity QualityAssurance     as projection on transaction.QualityAssurance;
 
+        // ─── Goods Receipt ────────────────────────────────────────────
+    entity GoodsReceipts     as projection on transaction.GoodsReceipts;
+    entity GoodsReceiptItems as projection on transaction.GoodsReceiptItems;
+
+    // ─── Invoice ──────────────────────────────────────────────────
+    entity Invoices          as projection on transaction.Invoices;
+    
+    entity InvoiceItems      as projection on transaction.InvoiceItems;
+
     // ─── Sales Orders ─────────────────────────────────────────────────
 
     
@@ -49,6 +58,8 @@ Service CatalogService @(path: 'CatalogService', requires:'authenticated-user') 
 }
 actions{
     action SalesOrdersApprove() returns SalesOrders;
+    action generatePDF()  returns String; // ADDED: returns download URL / base64
+    action sendInvoice()  returns String; // ADDED: generates PDF + emails supplier
     };
 
     entity SalesOrderItems as projection on transaction.SalesOrderItems;

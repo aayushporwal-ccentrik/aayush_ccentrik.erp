@@ -25,11 +25,12 @@ context master {
                           on inventory.plant = $self;
   }
 
-  entity BusinessPartners : cuid, managed {
+entity BusinessPartners : cuid, managed {
     name        : String(100);
-    role        : String(20); // Supplier, Customer, Dealer
+    role        : String(20);
     creditLimit : Decimal(15, 2);
-  }
+    email       : String(100); // ADDED: needed to send invoice to supplier
+}
 
 }
 
@@ -150,5 +151,56 @@ context transaction {
     plant         : Association to master.Plants;
     product       : Association to master.Products;
   }
+
+  // ADDED: Goods Receipt header — confirms physical arrival of goods against a PO
+entity GoodsReceipts : cuid, managed {
+    grNo          : String(20);
+    grDate        : Date;
+    status        : String(20); // Draft, Posted
+    purchaseOrder : Association to PurchaseOrders;
+    plant         : Association to master.Plants;
+    items         : Composition of many GoodsReceiptItems
+                      on items.goodsReceipt = $self;
+}
+
+// ADDED: GR line items — one per PO line item received
+entity GoodsReceiptItems : cuid {
+    goodsReceipt     : Association to GoodsReceipts;
+    purchaseOrderItem: Association to PurchaseOrderItems;
+    lineNo           : Integer;
+    product          : Association to master.Products;
+    receivedQty      : Decimal(15, 2);
+    uom              : commons.UoM;
+    weighbridgeTicket: Association to WeighbridgeTickets; // ADDED: netWeight → receivedQty
+}
+
+// ADDED: Invoice header — vendor's bill, matched against PO + GR
+entity Invoices : cuid, managed {
+    invoiceNo     : String(20);
+    invoiceDate   : Date;
+    dueDate       : Date;
+    status        : String(20); // Draft, Matched, Approved, Paid
+    supplier      : Association to master.BusinessPartners;
+    purchaseOrder : Association to PurchaseOrders;       // one invoice = one PO
+    goodsReceipt  : Association to GoodsReceipts;
+    totalAmount   : Decimal(15, 2);
+    items         : Composition of many InvoiceItems
+                      on items.invoice = $self;
+}
+
+// ADDED: Invoice line items — matched against PO item + GR item
+entity InvoiceItems : cuid {
+    invoice          : Association to Invoices;
+    lineNo           : Integer;
+    purchaseOrderItem: Association to PurchaseOrderItems;
+    goodsReceiptItem : Association to GoodsReceiptItems;
+    product          : Association to master.Products;
+    invoicedQty      : Decimal(15, 2);
+    uom              : commons.UoM;
+    unitPrice        : Decimal(15, 2);
+    totalPrice       : Decimal(15, 2);
+}
+
+
 
 }
