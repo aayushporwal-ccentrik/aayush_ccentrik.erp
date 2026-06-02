@@ -51,10 +51,6 @@ modules:
       - comaayushsasalesanalyis.zip
       name: comaayushsasalesanalyis
       target-path: app/
-    - artifacts:
-      - comaayushpoproductionovp.zip
-      name: comaayushpoproductionovp
-      target-path: app/
 - name: erp-destinationcontent
   type: com.sap.application.content
   requires:
@@ -108,16 +104,6 @@ modules:
 - name: comaayushsasalesanalyis
   type: html5
   path: app/salesanalyis
-  build-parameters:
-    build-result: dist
-    builder: custom
-    commands:
-    - npm install
-    - npm run build:cf
-    supported-platforms: []
-- name: comaayushpoproductionovp
-  type: html5
-  path: app/production-ovp
   build-parameters:
     build-result: dist
     builder: custom

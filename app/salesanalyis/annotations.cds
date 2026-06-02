@@ -22,7 +22,7 @@ annotate CatalogService.SalesAnalytics with @(
     // CHANGED: Measures now references the aggregated property 'totalRevenue'
     UI.Chart #salesChart1 : {
         Title             : 'Sales by Status',
-        ChartType         : #Bar,
+        ChartType         : #Bar,       
         Dimensions        : [status],
         Measures          : [totalRevenue],
         MeasureAttributes : [{

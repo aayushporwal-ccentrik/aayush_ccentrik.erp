@@ -96,7 +96,7 @@ context transaction {
     status       : String(20); // Draft, Confirmed, Dispatched, Delivered
     deliveryDate : Date;
     customer     : Association to master.BusinessPartners;
-    OVERALL_STATUS: String(1); // N-New, A-Approved, X-Rejected, else Pending
+    OVERALL_STATUS: String(10) default 'N'; // N-New, A-Approved, X-Rejected, else Pending
     // Each SO can sell multiple products in one order
     items        : Composition of many SalesOrderItems
                      on items.salesOrder = $self;

@@ -1,7 +1,7 @@
 using {com.cement.erp.master, com.cement.erp.transaction} from '../db/data-model';
 
 
-Service CatalogService @(path: 'CatalogService', requires:'authenticated-user') {
+Service CatalogService @(path: 'CatalogService', require: 'authenticated-user') {
     
     // ─── Master Data ──────────────────────────────────────────────────
     @(restrict:[
@@ -49,12 +49,12 @@ Service CatalogService @(path: 'CatalogService', requires:'authenticated-user') 
         else 'Pending'
     end as OverallStatusText : String,
     case
-        when OVERALL_STATUS = 'A' then 3
-        when OVERALL_STATUS = 'X' then 1
-        when OVERALL_STATUS = 'N' then 2
-        when OVERALL_STATUS = 'P' then 2
-        else 2
-    end as IconColor : Integer
+        when OVERALL_STATUS = 'A' then '3'
+        when OVERALL_STATUS = 'X' then '1'
+        when OVERALL_STATUS = 'N' then '2'
+        when OVERALL_STATUS = 'P' then '2'
+        else '2'
+    end as IconColor : String
 }
 actions{
     action SalesOrdersApprove() returns SalesOrders;
@@ -82,12 +82,12 @@ entity SalesAnalytics as projection on transaction.SalesOrders {
         else 'Pending'
     end as OverallStatusText : String,
     case
-        when OVERALL_STATUS = 'A' then 3
-        when OVERALL_STATUS = 'X' then 1
-        when OVERALL_STATUS = 'N' then 2
-        when OVERALL_STATUS = 'P' then 2
-        else 2
-    end as IconColor : Integer
+        when OVERALL_STATUS = 'A' then '3'
+        when OVERALL_STATUS = 'X' then '1'
+        when OVERALL_STATUS = 'N' then '2'
+        when OVERALL_STATUS = 'P' then '2'
+        else '2'
+    end as IconColor : String
 };
 
     // ─── Inventory & Logistics ────────────────────────────────────────
